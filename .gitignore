@@ -1,0 +1,11 @@
+.idea/
+.vscode/
+**/bin/
+**/obj/
+**/lib/
+**/TestResults/
+**/Migrations/
+*.db
+*.db-shm
+*.db-wal
+.DS_Store

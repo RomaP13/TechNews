@@ -1,0 +1,38 @@
+@model TechNews.Models.Post
+
+@{
+    ViewData["Title"] = "Видалити";
+}
+
+<h1>Видалити новину</h1>
+
+<h3>Ви впевнені, що хочете видалити цю новину?</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Category)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Category.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            Дата
+        </dt>
+        <dd class = "col-sm-10">
+            @Model.CreatedAt.ToString("dd.MM.yyyy")
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Видалити" class="btn btn-danger" />
+        <a asp-action="Index" class="btn btn-secondary">Скасувати</a>
+    </form>
+</div>

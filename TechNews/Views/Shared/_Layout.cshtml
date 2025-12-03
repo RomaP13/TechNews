@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - TechNews</title>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.2/dist/lux/bootstrap.min.css" />
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+            <div class="container-fluid px-4">
+                <a class="navbar-brand text-uppercase fw-bold ls-2" asp-controller="Home" asp-action="Index">
+                    <i class="bi bi-cpu-fill me-2"></i>TechNews
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+                <div class="navbar-collapse collapse">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="Index">Головна</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="About">Про нас</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="Contact">Контакти</a>
+                        </li>
+                        @if (User.IsInRole("Admin") || User.IsInRole("Editor"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-warning fw-bold" asp-controller="Posts" asp-action="Index">
+                                    <i class="bi bi-newspaper"></i> Новини (Manage)
+                                </a>
+                            </li>
+                        }
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-danger fw-bold" asp-controller="Users" asp-action="Index">
+                                    <i class="bi bi-people-fill"></i> Користувачі
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                    
+                    <div class="d-flex">
+                        <partial name="_LoginPartial" />
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <div class="container flex-grow-1">
+        <main role="main" class="pb-3 pt-4">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="bg-dark text-white pt-4 pb-3 mt-auto">
+        <div class="container text-center">
+            <p>&copy; 2025 - TechNews - Курсова робота</p>
+            <div class="small">
+                <a class="text-light text-decoration-none mx-2" asp-controller="Home" asp-action="Privacy">Конфіденційність</a> |
+                <a class="text-light text-decoration-none mx-2" asp-controller="Home" asp-action="About">Про нас</a> |
+                <a class="text-light text-decoration-none mx-2" asp-controller="Home" asp-action="Contact">Контакти</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: '#content-editor',
+            plugins: 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table help wordcount',
+            toolbar: 'undo redo | blocks | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat',
+            menubar: false,
+            statusbar: false
+        });
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <text>
+            Swal.fire({
+                icon: 'success',
+                title: 'Успіх',
+                text: '@TempData["SuccessMessage"]',
+                showConfirmButton: false,
+                timer: 2000
+            });
+            </text>
+        }
+    </script>
+    
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

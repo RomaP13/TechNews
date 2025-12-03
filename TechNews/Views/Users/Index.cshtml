@@ -1,0 +1,69 @@
+@model IEnumerable<TechNews.Models.UserRolesViewModel>
+
+@{
+    ViewData["Title"] = "Керування користувачами";
+}
+
+<div class="container mt-5">
+    @if (ViewData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger shadow-sm" role="alert">
+            <i class="bi bi-shield-fill-exclamation me-2"></i>
+            @ViewData["ErrorMessage"]
+        </div>
+    }
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-uppercase fw-bold ls-2">Користувачі</h1>
+        <span class="badge bg-primary fs-6">Всього: @Model.Count()</span>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-dark text-white">
+                    <tr>
+                        <th class="py-3 ps-4">Email</th>
+                        <th class="py-3">Ролі</th>
+                        <th class="py-3 text-end pe-4">Дії</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td class="ps-4">
+                                <div class="fw-bold">@user.Email</div>
+                                <small class="text-muted">ID: @user.UserId</small>
+                            </td>
+                            <td>
+                                @if (user.Roles.Any())
+                                {
+                                    foreach (var role in user.Roles)
+                                    {
+                                        var badgeClass = role == "Admin" ? "bg-danger" : (role == "Editor" ? "bg-warning text-dark" : "bg-info text-dark");
+                                        <span class="badge @badgeClass me-1">@role</span>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="badge bg-light text-dark border">User</span>
+                                }
+                            </td>
+                            <td class="text-end pe-4">
+                                <form asp-action="Delete" asp-route-userId="@user.UserId" method="post" class="d-inline">
+                                    <a asp-action="Edit" asp-route-userId="@user.UserId" class="btn btn-outline-primary btn-sm me-1">
+                                        <i class="bi bi-pencil-fill"></i> Права
+                                    </a>
+                                    <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Ви впевнені, що хочете видалити цього користувача?');">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

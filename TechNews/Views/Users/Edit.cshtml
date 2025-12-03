@@ -1,0 +1,43 @@
+@model TechNews.Models.ChangeRoleViewModel
+
+@{
+    ViewData["Title"] = "Зміна ролей";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-dark text-white">
+                    <h4 class="mb-0">Керування доступом</h4>
+                </div>
+                <div class="card-body p-4">
+                    <h5 class="card-title mb-4">Користувач: <span class="text-primary">@Model.UserEmail</span></h5>
+                    
+                    <form asp-action="Edit" method="post">
+                        <input type="hidden" name="userId" value="@Model.UserId" />
+                        
+                        <div class="form-group mb-4">
+                            <label class="fw-bold mb-2">Оберіть ролі:</label>
+                            <div class="d-flex flex-column gap-2">
+                                @foreach (var role in Model.AllRoles)
+                                {
+                                    <div class="form-check p-3 border rounded bg-light">
+                                        <input class="form-check-input ms-0 me-2" type="checkbox" name="roles" value="@role.Name"
+                                               @(Model.UserRoles.Contains(role.Name) ? "checked=\"checked\"" : "") />
+                                        <label class="form-check-label fw-bold">@role.Name</label>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Зберегти зміни</button>
+                            <a asp-action="Index" class="btn btn-outline-secondary">Скасувати</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

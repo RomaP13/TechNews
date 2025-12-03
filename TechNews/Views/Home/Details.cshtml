@@ -1,0 +1,49 @@
+@model TechNews.Models.Post
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="container mt-5">
+    <div class="p-4 p-md-5 mb-4 text-white rounded bg-dark" 
+         style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('@Model.ImageUrl'); background-size: cover; background-position: center;">
+        <div class="col-md-10 px-0">
+            <h1 class="display-4 fst-italic text-white">@Model.Title</h1>
+            <p class="lead my-3">@Model.ShortDescription</p>
+            <div class="text-light">
+                <span class="badge bg-primary me-2">@Model.Category?.Name</span>
+                <span class="me-3"><i class="bi bi-calendar"></i> @Model.CreatedAt.ToString("dd.MM.yyyy")</span>
+                <span><i class="bi bi-person"></i> @(Model.AuthorEmail ?? "Редакція")</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-5">
+        <div class="col-md-9 mx-auto">
+            <article class="blog-post fs-5 lh-lg text-justify mb-5">
+                @Html.Raw(Model.Content) 
+            </article>
+
+            <hr class="my-5">
+
+            <div id="react-comments"></div>
+            
+            <div class="mt-5 text-center">
+                <a asp-action="Index" class="btn btn-outline-dark rounded-pill px-4">&larr; Назад до стрічки</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/16.13.0/umd/react.development.js"></script>
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.13.0/umd/react-dom.development.js"></script>
+    
+    <script>
+        window.postId = @Model.Id;
+        window.isAuthenticated = @User.Identity.IsAuthenticated.ToString().ToLower();
+        window.currentUser = '@User.Identity.Name';
+    </script>
+
+    <script src="~/js/comments.jsx"></script>
+}
