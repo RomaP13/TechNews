@@ -110,6 +110,12 @@ public class HomeController : Controller
         return RedirectToAction("Details", new { id = postId });
     }
 
+    public IActionResult PageNotFound()
+    {
+        Response.StatusCode = 404; // Явно вказуємо статус код для браузера
+        return View();
+    }
+
     public IActionResult Privacy()
     {
         return View();

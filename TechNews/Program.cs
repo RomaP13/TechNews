@@ -48,6 +48,8 @@ else
     app.UseHsts();
 }
 
+app.UseStatusCodePagesWithReExecute("/Home/PageNotFound");
+
 app.UseReact(config => { });
 app.UseDefaultFiles();
 app.UseStaticFiles();
