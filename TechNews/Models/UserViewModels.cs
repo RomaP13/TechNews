@@ -6,16 +6,16 @@ namespace TechNews.Models
     // Модель для списку користувачів (Index)
     public class UserRolesViewModel
     {
-        public string UserId { get; set; }
-        public string Email { get; set; }
-        public List<string> Roles { get; set; }
+        public required string UserId { get; set; }
+        public required string Email { get; set; }
+        public required  List<string> Roles { get; set; }
     }
 
     // Модель для редагування прав (Edit)
     public class ChangeRoleViewModel
     {
-        public string UserId { get; set; }
-        public string UserEmail { get; set; }
+        public required string UserId { get; set; }
+        public required string UserEmail { get; set; }
         public List<IdentityRole> AllRoles { get; set; }
         public IList<string> UserRoles { get; set; }
         

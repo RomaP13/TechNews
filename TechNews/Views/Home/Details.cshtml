@@ -41,8 +41,8 @@
     
     <script>
         window.postId = @Model.Id;
-        window.isAuthenticated = @User.Identity.IsAuthenticated.ToString().ToLower();
-        window.currentUser = '@User.Identity.Name';
+        window.isAuthenticated = @((User.Identity?.IsAuthenticated ?? false).ToString().ToLower());
+        window.currentUser = '@User.Identity?.Name';
     </script>
 
     <script src="~/js/comments.jsx"></script>

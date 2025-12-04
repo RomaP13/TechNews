@@ -41,11 +41,13 @@ namespace TechNews.Controllers
                 return BadRequest("Коментар не може бути пустим");
             }
 
+            string author = User.Identity?.Name ?? "Anonymous";
+
             var comment = new Comment
             {
                 PostId = postId,
                 Content = content,
-                AuthorEmail = User.Identity.Name, 
+                AuthorEmail = author, 
                 CreatedAt = DateTime.Now
             };
 

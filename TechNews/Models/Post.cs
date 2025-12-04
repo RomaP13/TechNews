@@ -10,20 +10,20 @@ namespace TechNews.Models
 
         [Required(ErrorMessage = "Заголовок обов'язковий")]
         [Display(Name = "Заголовок")]
-        public string Title { get; set; }
+        public required string Title { get; set; }
 
         [Display(Name = "Короткий опис")]
-        public string ShortDescription { get; set; }
+        public required string ShortDescription { get; set; }
 
         [Required(ErrorMessage = "Текст новини обов'язковий")]
         [Display(Name = "Зміст")]
-        public string Content { get; set; }
+        public required string Content { get; set; }
 
         [Display(Name = "Зображення (URL)")]
-        public string ImageUrl { get; set; }
+        public required string ImageUrl { get; set; }
 
         [Display(Name = "Дата публікації")]
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public required DateTime CreatedAt { get; set; } = DateTime.Now;
 
         // Зв'язок з категорією
         [Display(Name = "Категорія")]

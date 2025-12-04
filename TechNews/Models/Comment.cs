@@ -9,15 +9,15 @@ namespace TechNews.Models
 
         [Required]
         [Display(Name = "Коментар")]
-        public string Content { get; set; }
+        public required string Content { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         // Автор коментаря (email користувача)
-        public string AuthorEmail { get; set; }
+        public required string AuthorEmail { get; set; }
 
         // Зв'язок з новиною (Зовнішній ключ)
         public int PostId { get; set; }
-        public Post Post { get; set; }
+        public Post Post { get; set; } = null!;
     }
 }

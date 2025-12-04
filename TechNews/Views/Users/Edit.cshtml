@@ -24,7 +24,7 @@
                                 {
                                     <div class="form-check p-3 border rounded bg-light">
                                         <input class="form-check-input ms-0 me-2" type="checkbox" name="roles" value="@role.Name"
-                                               @(Model.UserRoles.Contains(role.Name) ? "checked=\"checked\"" : "") />
+                                            @(role.Name != null && Model.UserRoles.Contains(role.Name) ? "checked=\"checked\"" : "") />
                                         <label class="form-check-label fw-bold">@role.Name</label>
                                     </div>
                                 }

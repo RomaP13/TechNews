@@ -38,7 +38,7 @@ namespace TechNews.Controllers
                 userRolesViewModel.Add(new UserRolesViewModel
                 {
                     UserId = user.Id,
-                    Email = user.Email,
+                    Email = user.Email ?? "No Email",
                     Roles = roles.ToList()
                 });
             }
@@ -66,7 +66,7 @@ namespace TechNews.Controllers
             var model = new ChangeRoleViewModel
             {
                 UserId = user.Id,
-                UserEmail = user.Email,
+                UserEmail = user.Email ?? "No Email",
                 UserRoles = userRoles,
                 AllRoles = allRoles
             };

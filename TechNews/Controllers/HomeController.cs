@@ -96,11 +96,13 @@ public class HomeController : Controller
             return RedirectToAction("Details", new { id = postId });
         }
 
+        string author = User.Identity?.Name ?? "Anonymous";
+
         var comment = new Comment
         {
             PostId = postId,
             Content = content,
-            AuthorEmail = User.Identity.Name, // Беремо email поточного користувача
+            AuthorEmail = author,
             CreatedAt = DateTime.Now
         };
 
