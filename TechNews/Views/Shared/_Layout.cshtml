@@ -85,7 +85,7 @@
     
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
-    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdn.tiny.cloud/1/spphg8qgm26zwb4uf0rrf3gwgc2g7egqor3q4clikiwd0h0a/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
         tinymce.init({
             selector: '#content-editor',
@@ -101,7 +101,7 @@
             Swal.fire({
                 icon: 'success',
                 title: 'Успіх',
-                text: '@TempData["SuccessMessage"]',
+                text: '@Html.Raw(@TempData["SuccessMessage"])',
                 showConfirmButton: false,
                 timer: 2000
             });

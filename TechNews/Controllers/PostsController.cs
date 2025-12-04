@@ -45,6 +45,7 @@ namespace TechNews.Controllers
                 
                 _context.Add(post);
                 await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Новину успішно створено!";
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", post.CategoryId);
@@ -92,6 +93,7 @@ namespace TechNews.Controllers
                     if (!_context.Posts.Any(e => e.Id == post.Id)) return NotFound();
                     else throw;
                 }
+                TempData["SuccessMessage"] = "Зміни успішно збережено!";
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", post.CategoryId);
@@ -115,6 +117,7 @@ namespace TechNews.Controllers
             var post = await _context.Posts.FindAsync(id);
             if (post != null) _context.Posts.Remove(post);
             await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = "Новину видалено!";
             return RedirectToAction(nameof(Index));
         }
     }
