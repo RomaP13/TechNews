@@ -21,39 +21,48 @@
 </div>
 
 <div id="news-feed" class="container px-0">
-    <div class="row mb-4">
+    <div class="row mb-5">
         <div class="col-md-10 mx-auto">
-            <form asp-action="Index" method="get" class="card p-4 shadow-sm border-0 bg-white">
-                <div class="input-group input-group-lg">
-                    <select name="categoryId" class="form-select border-secondary" style="max-width: 250px;">
-                        <option value="">Всі категорії</option>
-                        @if (categories != null)
-                        {
-                            foreach (var cat in categories)
+            <form asp-action="Index" method="get" class="card p-3 p-md-4 shadow-sm border-0 bg-white">
+                <div class="row g-2 align-items-center">
+                    
+                    <div class="col-12 col-md-auto">
+                        <select name="categoryId" class="form-select border-secondary w-100">
+                            <option value="">Всі категорії</option>
+                            @if (categories != null)
                             {
-                                if (currentCategory == cat.Id)
+                                foreach (var cat in categories)
                                 {
-                                    <option value="@cat.Id" selected>@cat.Name</option>
-                                }
-                                else
-                                {
-                                    <option value="@cat.Id">@cat.Name</option>
+                                    if (currentCategory == cat.Id)
+                                    {
+                                        <option value="@cat.Id" selected>@cat.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@cat.Id">@cat.Name</option>
+                                    }
                                 }
                             }
-                        }
-                    </select>
+                        </select>
+                    </div>
 
-                    <input type="text" name="searchString" value="@currentFilter" class="form-control border-secondary" placeholder="Введіть ключові слова...">
+                    <div class="col-12 col-md">
+                        <input type="text" name="searchString" value="@currentFilter" class="form-control border-secondary" placeholder="Пошук новин...">
+                    </div>
                     
-                    <button type="submit" class="btn btn-dark px-4 text-uppercase fw-bold">
-                        <i class="bi bi-search"></i> Знайти
-                    </button>
+                    <div class="col-12 col-md-auto">
+                        <button type="submit" class="btn btn-dark w-100 text-uppercase fw-bold">
+                            <i class="bi bi-search"></i> Знайти
+                        </button>
+                    </div>
                     
-                    @if (isSearching)
+                    @if (!string.IsNullOrEmpty(currentFilter) || currentCategory.HasValue)
                     {
-                        <a asp-action="Index" class="btn btn-outline-danger px-3" title="Скинути фільтри">
-                            <i class="bi bi-x-lg"></i>
-                        </a>
+                        <div class="col-12 col-md-auto text-center">
+                            <a asp-action="Index" class="btn btn-outline-danger w-100 w-md-auto" title="Скинути">
+                                <i class="bi bi-x-lg"></i>
+                            </a>
+                        </div>
                     }
                 </div>
             </form>
