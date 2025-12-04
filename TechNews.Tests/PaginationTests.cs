@@ -14,7 +14,6 @@ namespace TechNews.Tests
                 .UseInMemoryDatabase(databaseName: "PaginationTestDb")
                 .Options;
 
-            // Очищення
             using (var context = new NewsContext(options))
             {
                 await context.Database.EnsureDeletedAsync();
@@ -27,8 +26,9 @@ namespace TechNews.Tests
                         Title = $"News {i}", 
                         Content = "Test", 
                         CategoryId = 1,
-                        ShortDescription = "Test desc",
-                        ImageUrl = "http://test.com/img.jpg"
+                        ShortDescription = "Desc",
+                        ImageUrl = "http://img.com",
+                        CreatedAt = DateTime.Now
                     });
                 }
                 await context.SaveChangesAsync();
@@ -39,7 +39,6 @@ namespace TechNews.Tests
                 var query = context.Posts.AsQueryable();
                 var result = await PaginatedList<Post>.CreateAsync(query, 1, 3);
                 
-                // 10 елементів по 3 на сторінку = 4 сторінки
                 Assert.Equal(4, result.TotalPages);
                 Assert.True(result.HasNextPage);
             }

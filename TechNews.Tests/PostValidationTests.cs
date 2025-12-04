@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures; // Потрібно для TempData
 using Microsoft.EntityFrameworkCore;
+using Moq; // Потрібно для Mock
+using System.Security.Claims;
 using TechNews.Controllers;
 using TechNews.Models;
-using System.Security.Claims;
 using Xunit;
 
 namespace TechNews.Tests
@@ -14,10 +16,9 @@ namespace TechNews.Tests
         public async Task Create_ReturnsView_WhenModelStateIsInvalid()
         {
             var options = new DbContextOptionsBuilder<NewsContext>()
-                .UseInMemoryDatabase(databaseName: "ValidationTestDb") // Унікальна назва бази
+                .UseInMemoryDatabase(databaseName: "ValidationTestDb")
                 .Options;
 
-            // Очищаємо базу перед тестом, щоб уникнути конфліктів
             using (var context = new NewsContext(options))
             {
                 await context.Database.EnsureDeletedAsync();
@@ -27,18 +28,22 @@ namespace TechNews.Tests
             using (var context = new NewsContext(options))
             {
                 var controller = new PostsController(context);
-                // Імітуємо помилку валідації
+                
+                controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>());
+
                 controller.ModelState.AddModelError("Title", "Required");
 
                 var newPost = new Post 
                 { 
+                    Title = "Ignored Title", 
+                    ShortDescription = "Ignored Desc",
+                    ImageUrl = "http://ignored.com",
                     Content = "Some content", 
-                    CategoryId = 1 // Категорія 1 вже створена в EnsureCreated
+                    CategoryId = 1,
+                    CreatedAt = DateTime.Now
                 };
 
                 var result = await controller.Create(newPost);
-
-                // Перевіряємо, що повернувся ViewResult (сторінка з помилками)
                 var viewResult = Assert.IsType<ViewResult>(result);
                 Assert.Equal(newPost, viewResult.Model);
             }
@@ -55,12 +60,19 @@ namespace TechNews.Tests
             {
                 await context.Database.EnsureDeletedAsync();
                 await context.Database.EnsureCreatedAsync();
+                
+                if (!context.Categories.Any())
+                {
+                    context.Categories.Add(new Category { Id = 1, Name = "Tech" });
+                    await context.SaveChangesAsync();
+                }
             }
 
             using (var context = new NewsContext(options))
             {
                 var controller = new PostsController(context);
 
+                // 1. Мокаємо Юзера
                 var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.Name, "admin@test.com"),
@@ -70,18 +82,21 @@ namespace TechNews.Tests
                 {
                     HttpContext = new DefaultHttpContext() { User = user }
                 };
+
+                controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>());
                 
                 var newPost = new Post 
                 { 
                     Title = "Valid Title", 
                     Content = "Valid Content", 
+                    ShortDescription = "Valid Desc",
+                    ImageUrl = "http://valid.com",
                     CategoryId = 1,
-                    ShortDescription = "Test",
-                    ImageUrl = "http://img.com"
+                    AuthorEmail = "admin@test.com",
+                    CreatedAt = DateTime.Now
                 };
 
                 var result = await controller.Create(newPost);
-
                 var redirectResult = Assert.IsType<RedirectToActionResult>(result);
                 Assert.Equal("Index", redirectResult.ActionName);
             }
