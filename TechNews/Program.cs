@@ -71,7 +71,7 @@ using (var scope = app.Services.CreateScope())
     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
     newsContext.Database.EnsureCreated();
-    userContext.Database.Migrate();
+    userContext.Database.EnsureCreated();
 
     // Створення ролей (Admin + Editor)
     string[] roles = new[] { "Admin", "Editor" };
